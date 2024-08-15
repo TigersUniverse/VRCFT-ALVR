@@ -1,12 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
     <RootNamespace>ALVRModule</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Platforms>AnyCPU;x64</Platforms>
     <BaseOutputPath></BaseOutputPath>
+    <TargetFrameworks>net7.0;netstandard2.1;net481</TargetFrameworks>
+    <LangVersion>11</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugType>none</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,11 +19,45 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions">
+      <HintPath>$(VRCFaceTrackingBuild)\net481\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\VRCFaceTracking\VRCFaceTracking.Core\VRCFaceTracking.Core.csproj" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'net481'">
+    <!--<Reference Include="VRCFaceTracking">
+      <HintPath>$(VRCFaceTrackingBuild)\net481\VRCFaceTracking.dll</HintPath>
+    </Reference>-->
+    <Reference Include="VRCFaceTracking.Core">
+      <HintPath>$(VRCFaceTrackingBuild)\net481\VRCFaceTracking.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="VRCFaceTracking.Core">
+      <HintPath>$(VRCFaceTrackingBuild)\net481\VRCFaceTracking.SDK.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+    <!--<Reference Include="VRCFaceTracking">
+      <HintPath>$(VRCFaceTrackingBuild)\net481\VRCFaceTracking.dll</HintPath>
+    </Reference>-->
+    <Reference Include="VRCFaceTracking.Core">
+      <HintPath>$(VRCFaceTrackingBuild)\net7.0\VRCFaceTracking.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="VRCFaceTracking.SDK">
+      <HintPath>$(VRCFaceTrackingBuild)\net7.0\VRCFaceTracking.SDK.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+    <!--<Reference Include="VRCFaceTracking">
+      <HintPath>$(VRCFaceTrackingBuild)\net481\VRCFaceTracking.dll</HintPath>
+    </Reference>-->
+    <Reference Include="VRCFaceTracking.Core">
+      <HintPath>$(VRCFaceTrackingBuild)\netstandard2.1\VRCFaceTracking.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="VRCFaceTracking.SDK">
+      <HintPath>$(VRCFaceTrackingBuild)\netstandard2.1\VRCFaceTracking.SDK.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
@@ -27,8 +66,8 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy /y &quot;$(TargetDir)ALVRModule.dll&quot; &quot;%25APPDATA%25\VRCFaceTracking\CustomLibs&quot;" />
-  </Target>
+  <ItemGroup>
+    <Content Include="ALVRModule.csproj.user" />
+  </ItemGroup>
 
 </Project>

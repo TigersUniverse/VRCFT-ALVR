@@ -308,7 +308,9 @@ namespace ALVRModule
             int cursor = 0;
             while (cursor < packet.Length)
             {
-                string str = Encoding.ASCII.GetString(packet[cursor..(cursor + 8)], 0, 8);
+                byte[] slice = new byte[8];
+                Array.Copy(packet, cursor, slice, 0, 8);
+                string str = Encoding.ASCII.GetString(slice, 0, 8);
                 cursor += 8;
 
                 switch (str)
